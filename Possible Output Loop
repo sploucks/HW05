@@ -1,0 +1,16 @@
+count = 0;
+    spaces = (weekDay * 4) + 2;
+    dayIncr = 0;
+    do{
+        spaces = weekDay * 3;
+        printf(" ");
+        printf(" %i ", dayOfMonth);
+        dayOfMonth = ++dayOfMonth;
+        count = ++count;
+    }
+    while (dayOfMonth <= maxMonth);
+    
+    for (int index = 1; index = (7 - count); index)
+    {
+        printf("  %d ", index);
+    }
