@@ -1,0 +1,417 @@
+#include <stdio.h>
+
+void userInput(int*, int*);
+int getDecember31(int);
+int getLeapYear(int);
+int getDayOfYear(int);
+int getMonth(int, int, int, int);
+int getWeekDay(int, int);
+int getMaxMonth(int, int);
+void diplayDate(int, int, int, int);
+void displayWeek(int, int, int, int, int, int, int, int);
+
+int main()
+{
+    int year;
+    int occurrence;
+    int dec31;
+    int leapYear;
+    int dayOfYear;
+    int month;
+    int dayOfMonth;
+    int weekDay;
+    int maxMonth;
+    
+    userInput(&year, &occurrence);
+    dec31 = getDecember31(year);
+    leapYear = getLeapYear(year);
+    dayOfYear = getDayOfYear(occurrence);
+    month = getMonth(occurrence, leapYear, dayOfYear, 0);
+    dayOfMonth = getMonth(occurrence, leapYear, dayOfYear, 1); //need to write new function????
+    weekDay = getWeekDay(dayOfYear, dec31);
+    maxMonth = getMaxMonth(month, leapYear);
+    displayWeek(occurrence, weekDay, year, month, dayOfMonth, maxMonth, dayOfYear, leapYear);
+
+    return 0;
+}
+
+void userInput(int *year, int *occurrence)
+{
+   printf("Enter year number -> ");
+   scanf("%i", &*year);
+   printf("Enter occurrence number -> ");
+   scanf("%i", &*occurrence);
+}
+
+int getDecember31(int thisYear)
+{
+    int lastYear;
+    int dec31;
+    
+    lastYear = thisYear - 1;
+    dec31 = (lastYear * 365 + (lastYear / 4) - (lastYear / 100) + (lastYear / 400)) % 7;
+
+    return(dec31);
+}
+
+int getLeapYear(int year)
+{
+    int leapYearPossible;
+    leapYearPossible = (!(year % 4) && (year % 100)) || !(year % 400);
+    return(leapYearPossible);
+}
+
+int getDayOfYear(int occurrence)
+{
+    int result;
+    result = (occurrence - 1) * 7 + 1;
+    return(result);
+}
+
+int getMonth(int occurrence, int leapYear, int dayOfYear, int mod)
+{
+    int month;
+    int dayOfMonth;
+    
+    if(dayOfYear <= 31)
+    {
+        dayOfMonth = dayOfYear;
+        month = 1 + (dayOfMonth - 1) * mod;
+    }
+    else if(dayOfYear <= (31 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - 31;
+        month = 2 + (dayOfMonth - 2) * mod;
+    }
+    else if(dayOfYear <= (31 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 + 28 + leapYear);
+        month = 3 + (dayOfMonth - 3) * mod;
+    }
+    else if(dayOfYear <= (31 * 2 + 30 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 2 + 28 + leapYear);
+        month = 4 + (dayOfMonth - 4) * mod;
+    }
+    else if(dayOfYear <= (31 * 3 + 30 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 2 + 30 + 28 + leapYear);
+        month = 5 + (dayOfMonth - 5) * mod;
+    }
+    else if(dayOfYear <= (31 * 3 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 3 + 30 + 28 + leapYear);
+        month = 6 + (dayOfMonth - 6) * mod;
+    }
+    else if(dayOfYear <= (31 * 4 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 3 + 30 * 2 + 28 + leapYear);
+        month = 7 + (dayOfMonth - 7) * mod;
+    }
+    else if(dayOfYear <= (31 * 5 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 4 + 30 * 2 + 28 + leapYear);
+        month = 8 + (dayOfMonth - 8) * mod;
+    }
+    else if(dayOfYear <= (31 * 5 + 30 * 3 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 5 + 30 * 2 + 28 + leapYear);
+        month = 9 + (dayOfMonth - 9) * mod;
+    }
+    else if(dayOfYear <= (31 * 6 + 30 * 3 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 5 + 30 * 3 + 28 + leapYear);
+        month = 10 + (dayOfMonth - 10) * mod;
+    }
+    else if(dayOfYear <= (31 * 6 + 30 * 4 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 6 + 30 * 3 + 28 + leapYear);
+        month = 11 + (dayOfMonth - 11) * mod;
+    }
+    else
+    {
+        dayOfMonth = dayOfYear - (31 * 6 + 30 * 4 + 28 + leapYear);
+        month = 12 + (dayOfMonth - 12) * mod;
+    }
+
+    return(month);
+}
+
+int getWeekDay(int dayOfYear, int dec31)
+{
+    int result;
+    result = (dayOfYear % 7 + dec31) % 7;
+    return(result);
+}
+
+int getMaxMonth(int month, int leapYear)
+{
+    int maxMonth;
+    switch(month)
+    {
+        case 1:
+            maxMonth = 31;
+            break;
+        case 2:
+            maxMonth = 28 + leapYear;
+            break;
+        case 3:
+            maxMonth = 31;
+            break;
+        case 4:
+            maxMonth = 30;
+            break;
+        case 5:
+            maxMonth = 31;
+            break;
+        case 6:
+            maxMonth = 30;
+            break;
+        case 7:
+            maxMonth = 30;
+            break;
+        case 8:
+            maxMonth = 31;
+            break;
+        case 9:
+            maxMonth = 30;
+            break;
+        case 10:
+            maxMonth = 31;
+            break;
+        case 11:
+            maxMonth = 30;
+            break;
+        case 12:
+            maxMonth = 31;
+            break;
+    }
+    return(maxMonth);
+}
+
+void diplayDate(int weekDay, int month, int dayOfMonth, int year)
+{
+    switch(weekDay)
+    {
+        case -1:
+            printf("Sunday ");
+            break;
+        case 0:
+            printf("Sunday ");
+            break;
+        case 1:
+            printf("Monday ");
+            break;
+        case 2:
+            printf("Tuesday ");
+            break;
+        case 3:
+            printf("Wednesday ");
+            break;
+        case 4:
+            printf("Thursday ");
+            break;
+        case 5:
+            printf("Friday ");
+            break;
+        case 6:
+            printf("Saturday ");
+            break;
+    }
+    
+    switch(month)
+    {
+        case 1:
+            printf("January %i, %i\n", dayOfMonth, year);
+            break;
+        case 2:
+            printf("February %i, %i\n", dayOfMonth, year);
+            break;
+        case 3:
+            printf("March %i, %i\n", dayOfMonth, year);
+            break;
+        case 4:
+            printf("April %i, %i\n", dayOfMonth, year);
+            break;
+        case 5:
+            printf("May %i, %i\n", dayOfMonth, year);
+            break;
+        case 6:
+            printf("June %i, %i\n", dayOfMonth, year);
+            break;
+        case 7:
+            printf("July %i, %i\n", dayOfMonth, year);
+            break;
+        case 8:
+            printf("August %i, %i\n", dayOfMonth, year);
+            break;
+        case 9:
+            printf("September %i, %i\n", dayOfMonth, year);
+            break;
+        case 10:
+            printf("October %i, %i\n", dayOfMonth, year);
+            break;
+        case 11:
+            printf("November %i, %i\n", dayOfMonth, year);
+            break;
+        case 12:
+            printf("December %i, %i\n", dayOfMonth, year);
+            break;
+        case 13:
+            printf("January %i, %i\n", dayOfMonth, year);
+            break;
+    }
+}
+
+void displayWeek(int occurrence, int weekDay, int year, int month, int dayOfMonth, int maxMonth, int dayOfYear, int leapYear)
+{
+    int spaces;
+    int count1;
+    int count2;
+    int dayIncr;
+    int weekDayEnd;
+    int monthEnd;
+    int maxMonthEnd;
+    int dayOfMonthEnd;
+    int yearEnd;
+    int countEnd;
+    
+    weekDayEnd = weekDay;
+    monthEnd = month;
+    maxMonthEnd = maxMonth;
+    dayOfMonthEnd = dayOfMonth;
+    yearEnd = year;
+    countEnd = 0;
+    
+    printf("\nStart of week: ");
+    diplayDate(weekDay, month, dayOfMonth, year);
+    
+    do
+    {
+        if (dayOfMonthEnd < maxMonthEnd)
+        {
+            ++dayOfMonthEnd;
+        }
+        else
+        {
+            dayOfMonthEnd = 1 + dayIncr;
+            ++dayIncr;
+            if(dayOfMonthEnd == 1)
+            {
+                ++monthEnd;
+            }
+        }
+        ++countEnd;
+    }
+    while (countEnd < 6);
+    
+    if ((dayOfMonthEnd > 365 && leapYear == 0) || (dayOfMonthEnd > 366 && leapYear == 1))
+    {
+        yearEnd += 1;
+    }
+    --weekDayEnd;
+    
+    printf("End of week: ");
+    diplayDate(weekDayEnd, monthEnd, dayOfMonthEnd, yearEnd);
+    
+    printf("\n         ");
+    switch(month)
+    {
+        case 1:
+            printf(" January\n");
+            break;
+        case 2:
+            printf("February\n");
+            break;
+        case 3:
+            printf("  March\n");
+            break;
+        case 4:
+            printf("  April\n");
+            break;
+        case 5:
+            printf("   May\n");
+            break;
+        case 6:
+            printf("  June\n");
+            break;
+        case 7:
+            printf("  July\n");
+            break;
+        case 8:
+            printf(" August\n");
+            break;
+        case 9:
+            printf("September\n");
+            break;
+        case 10:
+            printf(" October\n");
+            break;
+        case 11:
+            printf("November\n");
+            break;
+        case 12:
+            printf("December\n");
+            break;
+    }
+    printf("-=-=-=-=-=-=-=-=-=-=-=-=-=-\n");
+    printf("Sun Mon Tue Wed Thu Fri Sat\n");
+
+    count1 = 0;
+    count2 = 0;
+    spaces = (weekDay * 4) + 2;
+    dayIncr = 0;
+    printf("%*i", spaces, dayOfMonth);
+    do
+    {
+        if (dayOfMonth < maxMonth)
+        {
+            ++dayOfMonth;
+            printf("%4i", dayOfMonth);
+        }
+        else
+        {
+            dayOfMonth = 1 + dayIncr; //or some other formula starting at first day;
+            printf("%3i", dayOfMonth);
+            ++dayIncr;
+        }
+        ++weekDay;
+        //dayOfYear += dayOfYear; somehow make this increment without changing original
+        ++count1;
+    }
+    while (weekDay < 6);
+
+    do
+    {
+        if (dayOfMonth < maxMonth)
+        {
+            ++dayOfMonth;
+            if (count2 == 0)
+            {
+                printf("\n%2i", dayOfMonth);
+            }
+            else
+            {
+                printf("%4i", dayOfMonth);
+            }
+        }
+        else
+        {
+            dayOfMonth = 1 + dayIncr; //or some other formula starting at first day;
+            if (count2 == 0)
+            {
+                printf("\n%2i", dayOfMonth);
+            }
+            else
+            {
+                printf("%4i", dayOfMonth);
+            }
+            ++dayIncr;
+        }
+        ++weekDay;
+        ++count1;
+        ++count2;
+    }
+    while (count1 < 6); //was 7, but that seemed too big
+    printf("\n");
+}
