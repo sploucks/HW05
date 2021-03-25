@@ -1,0 +1,211 @@
+#include <stdio.h>
+
+void userInput(int*, int*);
+int getDecember31(int);
+int getLeapYear(int);
+int getDayOfYear(int, int);
+int getMonth(int, int, int, int);
+int getWeekDay();
+void diplayWeekMonth(int, int, int, int);
+void displayResults(int, int, int, int, int);
+
+int main()
+{
+    int year;
+    int occurrence;
+    int dec31;
+    int leapYear;
+    int dayOfYear;
+    int weekDay;
+    
+    userInput(&year, &occurrence);
+    dec31 = getDecember31(year);
+    leapYear = getLeapYear(year);
+    dayOfYear = getDayOfYear(occurrence);
+    month = getMonth(occurrence, leapYear, dayOfYear, 0);
+    dayOfMonth = getMonth(occurrence, leapYear, dayOfYear, 1); //need to write new function????
+    weekDay = getWeekDay(); //need to write this function
+    diplayWeekMonth(weekDay, month, dayOfMonth);
+    displayResults(occurrence, weekDay, year, month, dayOfMonth);
+
+    return 0;
+}
+
+void userInput(int *year, int *occurrence)
+{
+   printf("Enter year number -> ");
+   scanf("%i", &*year);
+   printf("Enter occurrence number -> ");
+   scanf("%i", &*occurrence);
+}
+
+int getDecember31(int thisYear)
+{
+    int lastYear;
+    int dec31;
+    
+    lastYear = thisYear - 1;
+    dec31 = (lastYear * 365 + (lastYear / 4) - (lastYear / 100) + (lastYear / 400)) % 7;
+
+    return(dec31);
+}
+
+int getLeapYear(int year)
+{
+    int leapYearPossible;
+    leapYearPossible = (!(year % 4) && (year % 100)) || !(year % 400);
+    return(leapYearPossible);
+}
+
+int getDayOfYear(int occurrence)
+{
+    int result;
+    result = (occurrence - 1) * 7 + 1;
+    printf("dayOfYear: %i", result); //test
+    
+    return(result);
+}
+
+int getMonth(int occurrence, int leapYear, int dayOfYear, int mod)
+{
+    int month;
+    int dayOfMonth;
+    
+    if(dayOfYear <= 31)
+    {
+        dayOfMonth = dayOfYear;
+        month = 1 + (dayOfMonth - 1) * mod;
+    }
+    else if(dayOfYear <= (31 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - 31;
+        month = 2 + (dayOfMonth - 2) * mod;
+    }
+    else if(dayOfYear <= (31 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 + 28 + leapYear);
+        month = 3 + (dayOfMonth - 3) * mod;
+    }
+    else if(dayOfYear <= (31 * 2 + 30 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 2 + 28 + leapYear);
+        month = 4 + (dayOfMonth - 4) * mod;
+    }
+    else if(dayOfYear <= (31 * 3 + 30 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 2 + 30 + 28 + leapYear);
+        month = 5 + (dayOfMonth - 5) * mod;
+    }
+    else if(dayOfYear <= (31 * 3 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 3 + 30 + 28 + leapYear);
+        month = 6 + (dayOfMonth - 6) * mod;
+    }
+    else if(dayOfYear <= (31 * 4 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 3 + 30 * 2 + 28 + leapYear);
+        month = 7 + (dayOfMonth - 7) * mod;
+    }
+    else if(dayOfYear <= (31 * 5 + 30 * 2 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 4 + 30 * 2 + 28 + leapYear);
+        month = 8 + (dayOfMonth - 8) * mod;
+    }
+    else if(dayOfYear <= (31 * 5 + 30 * 3 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 5 + 30 * 2 + 28 + leapYear);
+        month = 9 + (dayOfMonth - 9) * mod;
+    }
+    else if(dayOfYear <= (31 * 6 + 30 * 3 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 5 + 30 * 3 + 28 + leapYear);
+        month = 10 + (dayOfMonth - 10) * mod;
+    }
+    else if(dayOfYear <= (31 * 6 + 30 * 4 + 28 + leapYear))
+    {
+        dayOfMonth = dayOfYear - (31 * 6 + 30 * 3 + 28 + leapYear);
+        month = 11 + (dayOfMonth - 11) * mod;
+    }
+    else
+    {
+        dayOfMonth = dayOfYear - (31 * 6 + 30 * 4 + 28 + leapYear);
+        month = 12 + (dayOfMonth - 12) * mod;
+    }
+
+    return(month);
+}
+
+void diplayWeekMonth(int weekDay, int month, int dayOfMonth)
+{
+    printf("\nStart of week: ");
+    switch(weekDay)
+    {
+        case 0:
+            printf("Sunday ");
+            break;
+        case 1:
+            printf("Monday ");
+            break;
+        case 2:
+            printf("Tuesday ");
+            break;
+        case 3:
+            printf("Wednesday ");
+            break;
+        case 4:
+            printf("Thursday ");
+            break;
+        case 5:
+            printf("Friday ");
+            break;
+        case 6:
+            printf("Saturday ");
+            break;
+    }
+    
+    switch(month)
+    {
+        case 1:
+            printf("January %i\n", dayOfMonth);
+            break;
+        case 2:
+            printf("February %i\n", dayOfMonth);
+            break;
+        case 3:
+            printf("March %i\n", dayOfMonth);
+            break;
+        case 4:
+            printf("April %i\n", dayOfMonth);
+            break;
+        case 5:
+            printf("May %i\n", dayOfMonth);
+            break;
+        case 6:
+            printf("June %i\n", dayOfMonth);
+            break;
+        case 7:
+            printf("July %i\n", dayOfMonth);
+            break;
+        case 8:
+            printf("August %i\n", dayOfMonth);
+            break;
+        case 9:
+            printf("September %i\n", dayOfMonth);
+            break;
+        case 10:
+            printf("October %i\n", dayOfMonth);
+            break;
+        case 11:
+            printf("November %i\n", dayOfMonth);
+            break;
+        case 12:
+            printf("December %i\n", dayOfMonth);
+            break;
+    }
+}
+
+void displayResults(int occurrence, int weekDay, int year, int month, int dayOfMonth)
+{
+    
+    
+}
