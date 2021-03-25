@@ -1,0 +1,58 @@
+#include <stdio.h>
+
+void userInput(int*, int*);
+int getDecember31(int);
+int getLeapYear(int);
+int getDayOfYear(int, int);
+int getMonth(int, int, int, int, int);
+
+int main()
+{
+    int year;
+    int occurrence;
+    int dec31;
+    int leapYear;
+    int dayOfYear;
+    
+    userInput(&year, &occurrence);
+    dec31 = getDecember31(year);
+    leapYear = getLeapYear(year);
+    dayOfYear = getDayOfYear(occurrence);
+
+    return 0;
+}
+
+void userInput(int *year, int *occurrence)
+{
+   printf("Enter year number -> ");
+   scanf("%i", &*year);
+   printf("Enter occurrence number -> ");
+   scanf("%i", &*occurrence);
+}
+
+int getDecember31(int thisYear)
+{
+    int lastYear;
+    int dec31;
+    
+    lastYear = thisYear - 1;
+    dec31 = (lastYear * 365 + (lastYear / 4) - (lastYear / 100) + (lastYear / 400)) % 7;
+
+    return(dec31);
+}
+
+int getLeapYear(int year)
+{
+    int leapYearPossible;
+    leapYearPossible = (!(year % 4) && (year % 100)) || !(year % 400);
+    return(leapYearPossible);
+}
+
+int getDayOfYear(int occurrence)
+{
+    int result;
+    result = (occurrence - 1) * 7 + 1;
+    printf("dayOfYear: %i", result); //test
+    
+    return(result);
+}
